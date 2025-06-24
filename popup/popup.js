@@ -77,9 +77,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   function getActiveTabUrlAndProcess() {
-    console.log('getActiveTabUrlAndProcess');
     getActiveTabUrl((baseUrl, hostname, url) => {
-      console.log('baseUrl', baseUrl, hostname, url);
       if (baseUrl) {
         siteUrlInput.value = url.href;
         messageOutput(dateTime(), `サムネイルを取得します`);
@@ -123,6 +121,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const issueLink = document.getElementById('issue-link');
   if (issueLink) clickURL(issueLink);
   const storeLink = document.getElementById('store_link');
+  storeLink.href = `https://chrome.google.com/webstore/detail/${chrome.runtime.id}`;
   if (storeLink) clickURL(storeLink);
 
   document.getElementById('extension-id').textContent = `${chrome.runtime.id}`;
@@ -165,7 +164,6 @@ function updateThumbnailUrls(hostname, url) {
     notFoundThumbnail(hostname);
     return;
   }
-  console.log('updateThumbnailUrls', hostname, url, thumbnail.getIdFuncName);
   const videoId = getId[thumbnail.getIdFuncName](url);
   const sizes = Object.keys(thumbnail.sizes);
   thumbnailList.innerHTML = '';
@@ -299,7 +297,6 @@ function createSortButton() {
       thumbnails.reverse();
     }
     thumbnails.forEach((thumbnail) => thumbnailList.appendChild(thumbnail));
-    console.log('ソート後');
   }
 
   function toggleSortIcon(currentSort) {
@@ -321,7 +318,6 @@ function createSortButton() {
  * @return {HTMLElement} 作成されたリストアイテム
  */
 function createListItem(width, height, thumbnailUrl, sizeData) {
-  console.log('createListItem', width, height, sizeData, thumbnailUrl);
   const listItem = document.createElement('li');
   listItem.id = `thumbnail-${sizeData.name}-item`;
   listItem.classList.add('list-group-item');
@@ -349,17 +345,14 @@ function handleDownloadClick(link, target) {
   link.addEventListener("click", (event) => {
     event.preventDefault();
     const size = link.getAttribute("data-size");
-    console.log('イベントハンドラ', link, target, size);
-    const fileNameValue = document.getElementById('filename-from').value;
+    const fileNameValue = document.getElementById('filename-input').value;
     const saveFilenameAddSize = document.getElementById('filename-add-size-checkbox').checked;
-    const siteUrl = document.getElementById('site-url-from').value;
+    const siteUrl = document.getElementById('site-url-input').value;
     const baseUrl = new URL(siteUrl).origin;
 
     const fileType = document.querySelector('input[name="filetype-radio"]:checked').value;
     const img = target.querySelector(`#thumbnail-${size}`);
     if (!img) return;
-    const imgUrl = img.src;
-    console.log('imgUrl', img, imgUrl, size, fileNameValue, fileType, saveFilenameAddSize);
 
     fetch(img.src, { mode: 'cors' })
       .then(response => response.blob())
@@ -367,7 +360,7 @@ function handleDownloadClick(link, target) {
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
-        a.download = savefilenameAddSize ? `${fileNameValue}_${size}.${fileType}` : `${fileNameValue}.${fileType}`;
+        a.download = saveFilenameAddSize ? `${fileNameValue}_${size}.${fileType}` : `${fileNameValue}.${fileType}`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
