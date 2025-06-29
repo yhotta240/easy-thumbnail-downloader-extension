@@ -107,8 +107,8 @@
               <label class="form-check-label" for="jpg-radio">jpg</label>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="filetype-radio" id="ico-radio" value="ico">
-              <label class="form-check-label" for="ico-radio">ico</label>
+              <input class="form-check-input" type="radio" name="filetype-radio" id="webp-radio" value="webp">
+              <label class="form-check-label" for="webp-radio">webp</label>
             </div>
             <!-- <div class="form-check form-check-inline">
               <input class="form-check-input" type="radio" name="filetype-radio" id="svg-radio" value="svg">
@@ -168,63 +168,53 @@
       <div class="accordion" id="accordion-word">
         <div class="accordion-item">
           <h2 class="accordion-header">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOTwo"
-              aria-expanded="true" aria-controls="collapseTwo">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
+              aria-expanded="true" aria-controls="collapseOne">
               チュートリアル
             </button>
           </h2>
-          <div id="collapseOTwo" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+          <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordion-word">
             <div class="accordion-body p-3">
+              <p class="mb-2 fw-bold">
+                Chrome ウェブストアから拡張機能をインストール
+              </p>
               <p class="mb-1 fw-bold">
-                拡張機能を有効にする
-              <ol>
-                <li>PCで Chrome を開きます。</li>
-                <li>右上の [拡張機能] <img
-                    src="https://storage.googleapis.com/support-kms-prod/pPIeCzvFrMFIBxrrrWuHfxU58Rx9xBLyyv7F"
-                    alt="拡張機能" height="18"> を選択します。</li>
-                <li>「Sample - サンプル」を選択します。（固定を指定しておくと，常に表示されます）</li>
+                サムネイルをダウンロードする
+              </p>
+              <ol class="my-1 px-4">
+                <li class="mb-2"><a href="#collapseTwo" data-bs-toggle="collapse"> 対応しているサイト</a>を開き，サムネイルを取得したいページへ移動</li>
+                <li class="mb-2">その状態で拡張機能をクリックしてポップアップを開く</li>
+                <li class="mb-2">ファイル名やファイル形式を設定する</li>
+                <li class="mb-2">プレビューに表示されているサムネイルをダウンロードする
+                  <ul>
+                    <li class="mb-2">
+                      各サイズのサムネイルのプレビュー画像が表示される
+                    </li>
+                    <li class="mb-2">
+                      取得したいサイズのサムネイルの隣にある「ダウンロードアイコン」をクリックしてダウンロード
+                    </li>
+                  </ul>
+                </li>
               </ol>
-              </p>
-
-              <p class="mb-1 fw-bold">
-                Sampleを有効にする
-              </p>
-              <ul class="m-1">
-                <li>拡張機能のポップアップを開き，「Sampleを有効にする」のトグルボタンをクリック</li>
-                <li> </li>
-                <li></li>
-              </ul>
-              <div class="mb-3">無効にする場合も同じ操作を行ってください。</div>
-              <p class="mb-1 fw-bold">
-                設定
-              </p>
+              <div>補足: 特定のサイトのサムネイルを取得したい場合，URL入力欄に WEB ページの URL を入力することでサムネイルを取得できます．</div>
+            </div>
+          </div>
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed border-top" type="button" data-bs-toggle="collapse"
+              data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+              対応しているサイト
+            </button>
+          </h2>
+          <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordion-word">
+            <div class="accordion-body p-3">
               <ul>
-                <li>
-
-                </li>
-                <li>
-
-                </li>
-                <li>
-
-                </li>
-              </ul>
-              <p class="mb-1 fw-bold">
-                操作方法
-              </p>
-              <ul>
-                <li>
-
-                </li>
-                <li>
-
-                </li>
+                <li class="mb-2"><a href="https://www.youtube.com">https://www.youtube.com</a></li>
+                <li class="mb-2"><a href="https://note.com">https://note.com</a></li>
               </ul>
             </div>
           </div>
         </div>
       </div>
-
     </div>
 
     <!-- 詳細情報 -->
