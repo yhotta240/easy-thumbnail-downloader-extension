@@ -204,15 +204,20 @@ function notFoundThumbnail(hostname) {
       </p>
     </div>
   `;
-  thumbnailList.querySelector(`#document-list`)
-    .addEventListener("click", (event) => {
-      event.preventDefault();
-      const target = document.querySelector(event.currentTarget.getAttribute("data-bs-target"));
-      if (target) {
-        const tab = new bootstrap.Tab(target);
-        tab.show();
-      }
-    });
+  thumbnailList.querySelector(`#document-list`).addEventListener("click", (event) => {
+    event.preventDefault();
+    const target = document.querySelector(event.currentTarget.getAttribute("data-bs-target"));
+    if (!target) return;
+    const onTabShown = () => {
+      const collapseEl = document.getElementById('collapseTwo');
+      const collapse = new bootstrap.Collapse(collapseEl, { toggle: true });
+      target.removeEventListener('shown.bs.tab', onTabShown);
+    };
+    target.addEventListener('shown.bs.tab', onTabShown);
+    const tab = new bootstrap.Tab(target);
+    tab.show();
+  });
+
 }
 
 /** * アクティブなタブのURLを取得し，コールバック関数を実行する
