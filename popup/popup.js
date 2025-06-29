@@ -1,5 +1,5 @@
 import { thumbnailData } from "/data/thumbnailData.js";
-import { getId, getThumbnailUrl } from "./components/getThumbnailActions.js";
+import getThumbnailUrl from "./components/getThumbnailUrl.js";
 
 const messageDiv = document.getElementById('message');
 const manifestData = chrome.runtime.getManifest();
@@ -152,8 +152,6 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
-
-
 /** * サムネイルのURLを更新し，リストに追加する
  * @param {string} hostname 例: "www.youtube.com"
  * @param {string} url 例: "https://www.youtube.com/watch?v=VIDEO_ID"
@@ -164,21 +162,25 @@ function updateThumbnailUrls(hostname, url) {
     notFoundThumbnail(hostname);
     return;
   }
-  const videoId = getId[thumbnail.getIdFuncName](url);
   const sizes = Object.keys(thumbnail.sizes);
   thumbnailList.innerHTML = '';
   const metadataPromises = sizes.map((key, index) => {
     const size = thumbnail.sizes[key];
-    const url = getThumbnailUrl[hostname](thumbnail.baseUrl, videoId, size.name);
+    const thumbnailUrl = getThumbnailUrl[hostname](url, thumbnail.baseUrl, size.name);
+    const resolveUrl = thumbnailUrl instanceof Promise ? thumbnailUrl : Promise.resolve(thumbnailUrl);
 
-    return getImageMetadata(url, index, sizes).then(metadata => {
-      if (!metadata) return null;
-
-      const listItem = createListItem(metadata.width, metadata.height, url, size);
-      thumbnailList.appendChild(listItem);
-      const downloadLink = listItem.querySelector('a');
-      handleDownloadClick(downloadLink, listItem);
-      return true; // 成功したことを示す任意の値
+    return resolveUrl.then(resolvedUrl => {
+      const metadata = getImageMetadata(resolvedUrl, index, size);
+      return metadata.then((data) => {
+        if (data) {
+          const listItem = createListItem(data.width, data.height, data.url, size);
+          thumbnailList.appendChild(listItem);
+          const downloadLink = listItem.querySelector('a');
+          handleDownloadClick(downloadLink, listItem);
+        } else {
+          notFoundThumbnail(hostname);
+        }
+      });
     });
   });
 
@@ -233,6 +235,7 @@ function getActiveTabUrl(callback) {
  * @return {Promise<Object|null>} 画像のメタデータ（幅，高さ，Blob）またはnull
  */
 function getImageMetadata(imageUrl) {
+
   return fetch(imageUrl)
     .then(response => {
       if (!response.ok) {
@@ -247,7 +250,8 @@ function getImageMetadata(imageUrl) {
           resolve({
             width: img.width,
             height: img.height,
-            blob: blob
+            blob: blob,
+            url: imageUrl
           });
         };
         img.onerror = function () {
