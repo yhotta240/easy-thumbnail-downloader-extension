@@ -21,5 +21,16 @@ export const thumbnailData = {
         size: 3
       }
     }
+  },
+  "note.com":{
+    baseUrl: "https://assets.st-note.com/",
+    getIdFuncName: "getNoteId",
+    sizes: {
+      120: { name: "120", width: 120, height: 90, size: 1 },
+      240: { name: "240", width: 240, height: 180, size: 2 },
+      480: { name: "480", width: 480, height: 360, size: 3 },
+      1280: { name: "1280", width: 1280, height: 720, size: 4 },
+      1920: { name: "1920", width: 1920, height: 1080, size: 5 },
+    }
   }
 }
